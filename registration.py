@@ -11,6 +11,5 @@ with requests.Session() as c:
 		'token' : '297b6feab3721bf2c68527a718b620f4',
 		'github' : 'https://github.com/Hsanch/project-code2040.git'
 	}
-	json_str = json.dumps(register_data)
-	response = c.post(url, data = json_str, headers = { "Referer": "'http://challenge.code2040.org"})
+	response = c.post(url, data = register_data, headers = { "Referer": "'http://challenge.code2040.org"})
 	print response.status_code
