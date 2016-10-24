@@ -4,10 +4,9 @@ import requests
 with requests.Session() as c: 
 	url = 'http://challenge.code2040.org/api/register'
 	c.get(url)
-	#csrftoken = c.cookies['crsftoken']
+	
 	register_data = {
-
-		#'csrfmiddlewaretoken' : csrftoken, 
+		
 		'token' : '297b6feab3721bf2c68527a718b620f4',
 		'github' : 'https://github.com/Hsanch/project-code2040.git'
 	}
