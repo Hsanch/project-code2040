@@ -32,13 +32,14 @@ with requests.Session() as c:
 	keyword = response.content
 	result = reverse2(keyword)
 
+	validateURL = 'http://challenge.code2040.org/api/reverse/validate'
 	reversedString = {
 
 		'token' : '297b6feab3721bf2c68527a718b620f4',
 		'string' : result
 	}
 
-	response2 = c.post(url, data = reversedString, headers = {"Referer": "http://challenge.code2040.org"})
+	response2 = c.post(validateURL, data = reversedString, headers = {"Referer": "http://challenge.code2040.org"})
 	print response2.status_code
 	print keyword
 	print reverse2(keyword)
