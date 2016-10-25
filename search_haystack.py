@@ -63,7 +63,7 @@ index = find_needle(needle,haystack)
 
 with requests.Session() as j: 
 
-	url = 'http://challenge.code2040.org/api/haystack'
+	url = 'http://challenge.code2040.org/api/haystack/validate'
 
 	needle_data = {
 
