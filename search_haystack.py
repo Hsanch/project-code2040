@@ -73,6 +73,4 @@ with requests.Session() as j:
 
 	response = j.post(url, data = haystack_data, headers = {"Referer" : "http://challenge.code2040.org"})
 
-	content = response.content
-
-print content.status_code
+print response.status_code
