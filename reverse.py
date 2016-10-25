@@ -20,7 +20,6 @@ def reverse2(string):
 with requests.Session() as c: 
 
 	url = 'http://challenge.code2040.org/api/reverse'
-	c.get(url)
 
 	DATA = {
 
