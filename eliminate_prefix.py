@@ -1,10 +1,19 @@
 import json
 import requests
 
+def eliminate_prefix(Prefix, Array):
+	index = 0
+	while index < len(Array):
+		if Array[index].find(Prefix) != -1:
+			Array.remove(Array[index])
+		else:
+			index+=1
+	return Array
+
 
 def get_array(Content):
 	i = 0
-	temp = ''
+	temp = ""
 	temp_array = []
 	while Content[i] != '[':
 		i+=1
@@ -22,7 +31,7 @@ def get_array(Content):
 
 
 def get_prefix(Content):
-	temp_prefix = ''
+	temp_prefix = ""
 	i = 0
 	while content[i] != ':':
 		i+=1
@@ -48,26 +57,21 @@ content = response.content
 array = []
 prefix = get_prefix(content)
 array = get_array(content)
-new_array = []
-new_array=[]
 
-index = 0
-temp = ""
 
-print "CONTENT " 
-print content
+new_array = eliminate_prefix(prefix, array)
 
-print "ARRAY "
-print array
-while index < len(array):
-	if array[index].find(prefix) != -1:
-		array.remove(array[index])
-	else:
-		index+=1
+with requests.Session() as j: 
 
-print "PREFIX " 
-print prefix
-print "NEW ARRAY " 
-print array
+	URL = 'http://challenge.code2040.org/api/prefix/validate'
 
-#print new_array
+	validate_data = {
+
+		'token' : '297b6feab3721bf2c68527a718b620f4',
+		'needle' : new_array
+	}
+
+	Response = j.post(URL, data = validate_data, headers = { "Referer": "http://challenge.code2040.org"})
+
+
+print Response.status_code
