@@ -17,7 +17,6 @@ with requests.Session() as c:
 interval =  content['interval']
 
 datestamp = content['datestamp']
-datestamp = iso8601.parse_date(datestamp)
 
 print datestamp
 print interval
@@ -32,13 +31,21 @@ minutes = hour_remainder/60
 minute_remainder = hour_remainder%60
 
 print days
-print day_remainder
 print hours
-print hour_remainder
 print minutes
 print minute_remainder
 
+with requests.Session() as j:
 
+	validate_url = 'http://challenge.code2040.org/api/dating/validate'
 
-Year = datestamp[1]
-print 
+	new_data = {
+
+		'token' : '297b6feab3721bf2c68527a718b620f4',
+
+	}
+
+	response2 = j.post(url = validate_url, data = new_data, headers = {"Referer" : "http://challenge.code2040.org"})
+	
+
+	

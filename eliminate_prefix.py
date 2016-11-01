@@ -7,11 +7,14 @@ def eliminate_prefix(Prefix, Array):
 	temp_ary2 = []
 	while index < len(temp_ary):
 		if temp_ary[index].find(Prefix) != -1:
-			temp_ary.remove(temp_ary[index])
+			temp_ary2 temp_ary[index]
+			index+=1
 		else:
 			index+=1
-	temp_ary2 = temp_ary
+
+	print temp_ary2
 	return temp_ary2
+
 
 with requests.Session() as c: 
 	url = 'http://challenge.code2040.org/api/prefix'
@@ -28,26 +31,20 @@ with requests.Session() as c:
 prefix = content['prefix']
 array = content['array']
 
-print content
-
-
 new_array = eliminate_prefix(prefix, array)
 
-with requests.Session() as j: 
-	URL = 'http://challenge.code2040.org/api/prefix/validate'
 
-	validate_data = {
+with requests.Session() as j: 
+
+	url = 'http://challenge.code2040.org/api/prefix/validate'
+
+	new_data = {
 
 		'token' : '297b6feab3721bf2c68527a718b620f4',
 		'array' : new_array
 	}
 
-	validate_data = json.dumps(validate_data)
-
-	response2 = j.post(URL, data = validate_data, headers = { "Referer": "http://challenge.code2040.org"})
+	response2 = j.post(url, data = new_data, headers = {"Referer" : "http://challenge.code2040.org"})
 
 print response2
-print "\n"
-print new_array
-print '\n'
-print validate_data
+print new_data
