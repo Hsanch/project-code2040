@@ -9,39 +9,6 @@ def find_needle(NEEDLE, HAYSTACK):
 		else:
 			INDEX+=1
 
-def load_haystack(Content):
-	i = 0
-	temp = ''
-	temp_haystack = []
-	while Content[i] != '[':
-		i+=1
-	i+=2
-	while Content[i] != ']':
-		if Content[i] != '"':
-			temp += Content[i]
-			i+=1
-		else:
-			i+=1
-
-	temp_haystack = temp.split(',')
-
-	return temp_haystack
-
-
-
-
-def get_needle(Content):
-	temp_needle = ''
-	i = 0
-	while content[i] != ':':
-		i+=1
-
-	i+=2
-	while content[i] != '"':
-		temp_needle += content[i]
-		i+=1
-	return temp_needle
-
 with requests.Session() as c: 
 
 	url = 'http://challenge.code2040.org/api/haystack'
@@ -53,11 +20,12 @@ with requests.Session() as c:
 
 	response = c.post(url, data = haystack_data, headers = {"Referer" : "http://challenge.code2040.org"})
 
-	content = response.content
+	content = json.loads(response.content)
 
 
-needle = get_needle(content)
-haystack = load_haystack(content)
+needle = content['needle']
+haystack = content['haystack']
+
 index = find_needle(needle,haystack)
 
 
@@ -72,7 +40,3 @@ with requests.Session() as j:
 	}
 
 	response = j.post(url, data = needle_data, headers = {"Referer" : "http://challenge.code2040.org"})
-
-print response.status_code
-print needle
-print haystack
