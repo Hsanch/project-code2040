@@ -91,9 +91,6 @@ interval =  content['interval']
 
 datestamp = content['datestamp']
 
-print datestamp
-print interval
-
 datestamp = isodate.parse_datetime(datestamp)
 time_zone = datestamp.tzinfo
 
@@ -142,11 +139,8 @@ totalYears = totalYears + leftover_years
 
 datestamp = datestamp.replace(year = totalYears,month = totalMonths, day = totalDays,hour = totalHours, minute = totalMinutes, second = totalSeconds)
 
-print datestamp
 
 datestamp = isodate.datetime_isoformat(datestamp)
-
-print datestamp
 
 with requests.Session() as j:
 
