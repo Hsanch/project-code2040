@@ -25,8 +25,9 @@ with requests.Session() as c:
 
 		'token' : '297b6feab3721bf2c68527a718b620f4'
 	}
+	headers = {'Content-Type' : 'application/json'}
 
-	response = c.post(url, data = DATA, headers = { "Referer": "http://challenge.code2040.org"})
+	response = c.post(url, data = json.dumps(DATA), headers = headers)
 	
 	keyword = response.content
 	result = reverse2(keyword)
@@ -38,7 +39,8 @@ with requests.Session() as c:
 		'string' : result
 	}
 
-	response2 = c.post(validateURL, data = reversedString, headers = {"Referer": "http://challenge.code2040.org"})
+	headers = {'Content-Type' : 'application/json'}
+
+	response2 = c.post(validateURL, data = json.dumps(reversedString), headers = headers)
 	print response2.status_code
-	print keyword
-	print reverse2(keyword)
+	

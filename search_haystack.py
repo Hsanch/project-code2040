@@ -17,8 +17,9 @@ with requests.Session() as c:
 
 		'token' : '297b6feab3721bf2c68527a718b620f4'
 	}
+	headers = {'Content-Type' : 'application/json'}
 
-	response = c.post(url, data = haystack_data, headers = {"Referer" : "http://challenge.code2040.org"})
+	response = c.post(url, data = json.dumps(haystack_data), headers = headers)
 
 	content = json.loads(response.content)
 
@@ -39,5 +40,8 @@ with requests.Session() as j:
 		'needle' : index
 	}
 
-	response = j.post(url, data = needle_data, headers = {"Referer" : "http://challenge.code2040.org"})
+	headers = { 'Content-Type' : 'application/json'}
 
+	response = j.post(url, data = json.dumps(needle_data), headers = headers)
+
+print response.status_code
