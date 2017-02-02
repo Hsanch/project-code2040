@@ -3,75 +3,6 @@ import requests
 import isodate
 import datetime
 
-def add_months(totalMonths, months_added, Added_Years):
-	temp = totalMonths + months_added
-	if (temp) <= 30:
-		totalMonths += months_added
-		return totalMonths
-	else:
-		Added_Years+=1
-		totalMonths = temp
-		totalMonths = totalMonths - 30 
-		add_months(totalMonths,0,Added_Years)
-		return totalMonths
-
-
-def add_days(totalDays, days_added, Added_Months):
-	temp = totalDays + days_added
-	if (temp) <= 30:
-		totalDays += days_added
-		return totalDays
-	else:
-		Added_Months+=1
-		totalDays = temp
-		totalDays = totalDays - 30 
-		add_days(totalDays,0,Added_Months)
-		return totalDays
-
-
-
-def add_hours(totalHours, hours_added, Added_Days):
-	temp = totalHours + hours_added
-	if (temp) < 24:
-		totalHours += hours_added
-		return totalHours
-	else:
-		Added_Days+=1
-		totalHours = temp
-		totalHours = totalHours - 24 
-		add_hours(totalHours,0,Added_Days)
-		return totalHours
-
-
-
-def add_minutes(totalMinutes, Minutes_added, Added_Hours):
-	temp = totalMinutes + Minutes_added
-	if (temp) < 60:
-		totalMinutes += Minutes_added
-		return totalMinutes
-	else:
-		Added_Hours+=1
-		totalMinutes = temp
-		totalMinutes = totalMinutes - 60 
-		add_minutes(totalMinutes,0,Added_Hours)
-		return totalMinutes
-
-
-
-def add_seconds(totalSeconds, seconds_added, Added_Minutes):
-	temp = totalSeconds + seconds_added
-	if (temp) < 60:
-		totalSeconds += seconds_added
-		return totalSeconds
-	else:
-		Added_Minutes+=1
-		totalSeconds = temp
-		totalSeconds = totalSeconds - 60 
-		add_seconds(totalSeconds,0,Added_Minutes)
-		return totalSeconds
-
-
-
 with requests.Session() as c:
 	url_dating = 'http://challenge.code2040.org/api/dating'
 
@@ -96,6 +27,7 @@ time_zone = datestamp.tzinfo
 
 months_added = 0
 
+
 days_added = interval/86400
 day_remainder = interval%86400
 
@@ -108,34 +40,58 @@ minute_remainder = hour_remainder%60
 seconds_added = minute_remainder
 
 #assign data form the iso 8601 to these variables
-totalSeconds = datestamp.second
-totalMinutes = datestamp.minute
-totalHours = datestamp.hour
-totalDays = datestamp.day
-totalMonths = datestamp.month
-totalYears = datestamp.year
+InitialSeconds = datestamp.second
+InitialMinutes = datestamp.minute
+InitialHours = datestamp.hour
+InitialDays = datestamp.day
+InitialMonths = datestamp.month
+InitialYears = datestamp.year
 
-leftover_minutes = 0
-leftover_hours = 0
-leftover_days = 0
-leftover_months = 0
-leftover_years = 0
 
-totalSeconds = add_seconds(totalSeconds,seconds_added,leftover_minutes)
-minutes_added = leftover_minutes + minutes_added
+if(InitialSeconds + seconds_added >= 60):
+	totalSeconds = (InitialSeconds + seconds_added) - 60
+	LeftOver = 1
+else:
+	totalSeconds = InitialSeconds + seconds_added
+	LeftOver = 0
 
-totalMinutes = add_minutes(totalMinutes,minutes_added,leftover_hours)
-hours_added = leftover_hours + hours_added
 
-totalHours = add_hours(totalHours,hours_added,leftover_days)
-days_added = leftover_days + days_added
+if(InitialMinutes + minutes_added + LeftOver >= 60):
+	totalMinutes = (InitialMinutes + minutes_added + LeftOver) - 60
+	LeftOver = 1
+else:
+	totalMinutes = InitialMinutes + minutes_added + LeftOver
+	LeftOver = 0
 
-totalDays = add_days(totalDays,days_added,leftover_months)
-months_added = leftover_months + months_added
+if(InitialHours + hours_added + LeftOver >= 24):
+	totalHours = (InitialHours + hours_added + LeftOver) - 24
+	LeftOver = 1
+else:
+	totalHours = InitialHours + hours_added + LeftOver
+	LeftOver = 0
 
-totalMonths = add_months(totalMonths,months_added,leftover_years)
+#ADD DAYS HERE::::::
 
-totalYears = totalYears + leftover_years
+if(InitialDays + days_added + LeftOver > 30):
+	totalDays = (InitialDays + days_added + LeftOver) - 30
+	LeftOver = 1
+else:
+	totalDays = InitialDays + days_added + LeftOver
+	LeftOver = 0
+
+if(LeftOver == 1):
+	if(InitialMonths +  LeftOver > 12):
+		totalMonths = (InitialMonths + LeftOver) - 12
+		LeftOver = 1
+	else:
+		totalMonths = InitialMonths + LeftOver
+		LeftOver = 0
+else:
+	totalMonths = InitialMonths
+
+
+totalYears = InitialYears + LeftOver
+
 
 datestamp = datestamp.replace(year = totalYears,month = totalMonths, day = totalDays,hour = totalHours, minute = totalMinutes, second = totalSeconds)
 
@@ -157,5 +113,6 @@ with requests.Session() as j:
 
 
 	response2 = j.post(url = validate_url, json = new_data, headers = headers )
+
 
 print response2

@@ -30,7 +30,7 @@ with requests.Session() as c:
 	response = c.post(url, data = json.dumps(DATA), headers = headers)
 	
 	keyword = response.content
-	result = reverse2(keyword)
+	result = reverse1(keyword)
 
 	validateURL = 'http://challenge.code2040.org/api/reverse/validate'
 	reversedString = {
